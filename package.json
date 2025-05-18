@@ -1,0 +1,77 @@
+{
+  "name": "json-log-formatter",
+  "displayName": "json-log-formatter",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:salto-log"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "salto-log",
+        "aliases": [
+          "Salto Log"
+        ],
+        "extensions": [
+          ".log"
+        ]
+      }
+    ],
+    "semanticTokenTypes": [
+      {
+        "id": "logKey",
+        "superType": "property"
+      },
+      {
+        "id": "level.trace"
+      },
+      {
+        "id": "level.debug"
+      },
+      {
+        "id": "level.info"
+      },
+      {
+        "id": "level.warn"
+      },
+      {
+        "id": "level.error"
+      }
+    ],
+    "semanticTokenColors": {
+      "logKey": "#AAAAAA",
+      "level.trace": "#757575",
+      "level.debug": "#1DB954",
+      "level.info": "#268BD2",
+      "level.warn": "#B58900",
+      "level.error": "#DC322F"
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile && yarn run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.100.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
