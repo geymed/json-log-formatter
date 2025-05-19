@@ -1,77 +1,111 @@
 {
   "name": "json-log-formatter",
-  "displayName": "json-log-formatter",
-  "description": "",
-  "version": "0.0.1",
+  "displayName": "JSON Log Formatter",
+  "description": "Colour-codes JSON-style logs (.log/.jsonl/.slog) in VS Code.",
+  "version": "1.0.0",
+  "publisher": "your-publisher-id",
   "engines": {
-    "vscode": "^1.100.0"
+    "vscode": "^1.90.0"
   },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onLanguage:salto-log"
-  ],
+  "license": "MIT",
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:json-log"
+  ],
   "contributes": {
     "languages": [
       {
-        "id": "salto-log",
+        "id": "json-log",
         "aliases": [
-          "Salto Log"
+          "JSON Log"
         ],
         "extensions": [
-          ".log"
+          ".log",
+          ".jsonl",
+          ".slog"
+        ],
+        "firstLine": "^\\s*\\{",
+        "schemes": [
+          "file"
         ]
       }
     ],
     "semanticTokenTypes": [
       {
         "id": "logKey",
+        "description": "Keys: level / time / name / message",
         "superType": "property"
       },
       {
-        "id": "level.trace"
+        "id": "jsonKey",
+        "description": "any other JSON key",
+        "superType": "property"
       },
       {
-        "id": "level.debug"
+        "id": "level",
+        "description": "Value of the level field"
       },
       {
-        "id": "level.info"
+        "id": "logValue",
+        "description": "Value of the time field"
       },
       {
-        "id": "level.warn"
+        "id": "nameValue",
+        "description": "Value of the name field"
       },
       {
-        "id": "level.error"
+        "id": "messageValue",
+        "description": "Value of the message field"
       }
     ],
-    "semanticTokenColors": {
-      "logKey": "#AAAAAA",
-      "level.trace": "#757575",
-      "level.debug": "#1DB954",
-      "level.info": "#268BD2",
-      "level.warn": "#B58900",
-      "level.error": "#DC322F"
+    "semanticTokenModifiers": [
+      {
+        "id": "trace"
+      },
+      {
+        "id": "debug"
+      },
+      {
+        "id": "info"
+      },
+      {
+        "id": "warn"
+      },
+      {
+        "id": "error"
+      }
+    ],
+    "configurationDefaults": {
+      "[jsonc]": {
+        "editor.semanticHighlighting.enabled": true,
+        "editor.semanticTokenColorCustomizations": {
+          "enabled": true,
+          "rules": {
+            "logKey": "#FF99D6",
+            "jsonKey": "#B9CBEB",
+            "logValue": "#E0E6C8",
+            "nameValue": "#4EC9B0",
+            "messageValue": "#C586F2",
+            "level.trace": "#757575",
+            "level.debug": "#1DB954",
+            "level.info": "#268BD2",
+            "level.warn": "#B58900",
+            "level.error": "#DC322F"
+          }
+        }
+      }
     }
   },
   "scripts": {
-    "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "yarn run compile && yarn run lint",
-    "lint": "eslint src",
-    "test": "vscode-test"
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "vscode:prepublish": "npm run compile",
+    "package": "vsce package"
   },
   "devDependencies": {
-    "@types/vscode": "^1.100.0",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "20.x",
-    "@typescript-eslint/eslint-plugin": "^8.31.1",
-    "@typescript-eslint/parser": "^8.31.1",
-    "eslint": "^9.25.1",
-    "typescript": "^5.8.3",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.5.2"
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5",
+    "vsce": "^3.24.0",
+    "vscode": "^1.1.43"
   }
 }

@@ -1,71 +1,75 @@
-# json-log-formatter README
+# JSON Log Formatter
 
-This is the README for your extension "json-log-formatter". After writing up a brief description, we recommend including the following sections.
+A lightweight VS Code extension that colour-codes line-delimited JSON logs for rapid scanning.
 
-## Features
+| Log part                                               | Default colour                     |
+| ------------------------------------------------------ | ---------------------------------- |
+| **Special keys** – `level / time / name / message`     | `#FF99D6` (pink)                   |
+| **Other JSON keys**                                    | `#D8DEE9` (slate)                  |
+| `level` values → `trace · debug · info · warn · error` | grey · green · blue · yellow · red |
+| `time` value                                           | `#9CDCFE`                          |
+| `name` value                                           | `#4EC9B0`                          |
+| `message` value                                        | `#C586F2`                          |
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+> Colours apply **only** when the editor language is *JSON Log*; other file-types remain unchanged.
 
 ---
 
-## Following extension guidelines
+## Features
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+* **Semantic highlighting** – works with any theme, no regex hacks.
+* Detects files ending in `.log`, `.jsonl`, `.slog` (or any glob you map).
+* One-time, per-workspace colour injection – no manual settings required.
+* Written in pure TypeScript; zero runtime dependencies.
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+---
 
-## Working with Markdown
+## Installation
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+```bash
+# build once (inside the extension folder)
+npm install
+npm run compile
+vsce package                     # produces json-log-formatter-<version>.vsix
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+# install in VS Code / Cursor
+code --install-extension json-log-formatter-<version>.vsix
+```
 
-## For more information
+Reload VS Code → open any `.log` file → enjoy the palette.
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+---
 
-**Enjoy!**
+## Customisation
+
+All colours are stored in **.vscode/settings.json**.
+Override any shade to match your theme:
+
+```jsonc
+// .vscode/settings.json
+"editor.semanticTokenColorCustomizations": {
+  "rules": {
+    "logKey":   "#FFC0FF",   // softer pink
+    "jsonKey":  "#AAB4BE",   // darker slate
+    "nameValue":"#3EC0A0"    // mint
+  }
+}
+```
+
+---
+
+## Example
+
+```json
+{"level":"info","time":"2025-05-18T12:37:59Z","name":"graphql/server","message":"Building service azure_devops"}
+```
+
+Open that line in VS Code and you’ll see:
+
+* **"level / time / name / message"** keys in pink
+* Timestamp in light-blue, module name in teal, message text in violet
+* `info` value in blue, `warn` in yellow, `error` in red, etc.
+
+---
+
+Made with ♥ for fellow Devs. Happy debugging!
